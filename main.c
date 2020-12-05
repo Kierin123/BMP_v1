@@ -54,18 +54,19 @@ int main(void)
 
     int header_size = sizeof(BMP_image->BMPheader) + sizeof(BMP_image->BMPdib)));
     int data_size = sizeof(BMP_image->data);
-    int data_elements = data_size/sizeof(uint32_t);
+    int data_elements = (data_size / sizeof(uint32_t)) - 1;
 
     for (int i = 0; i < data_elements; i++)
     {
-        
+        BMP_image->data[i] = 0x05FA2312 * i;
     }
 
-    BMP_image->data[0] = 0xFF0000FF;
-    BMP_image->data[1] = 0x0000FFFF;
+    /*BMP_image->data[0] = 0xFF0000FF;
+    BMP_image->data[1] = 0x0000FFFF; 
     BMP_image->data[2] = 0x00FF0000;
     BMP_image->data[3] = 0x000000FF;
- 
+    */
+
     if (file != NULL)
     {
 
