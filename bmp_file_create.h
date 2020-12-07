@@ -35,7 +35,8 @@ typedef struct
 {
     bmp_header BMPheader;
     bmp_dib BMPdib;
-    uint32_t data[4];
+    uint32_t *data;
+    
 } bmp_file;
 
 
