@@ -16,7 +16,7 @@
 int main(void)
 {
     FILE *file;
-    file = fopen("temp.bmp", "wb");
+    file = fopen("temp.bmp", "wa");
 
     bmp_file *BMP_image;
 
@@ -38,34 +38,33 @@ int main(void)
     BMP_image->BMPdib.dib_colors = NOT_RELEVANT;
     BMP_image->BMPdib.dib_important_colors = NOT_RELEVANT;
 
+    int *rgb = malloc(32);
+    int *ptr = &rgb[0];
+    sizeof(*ptr);
+    sizeof(rgb);
+    
     int header_size = sizeof(BMP_image->BMPheader) + sizeof(BMP_image->BMPdib);
     // int data_size = sizeof(BMP_image->data);
-    //   int data_elements = (data_size / sizeof(uint32_t)) - 1;
+    // int data_elements = (data_size / sizeof(uint32_t)) - 1;
 
-    //int * ptr = NULL;
-    //ptr = &data[0];
+    //data = 0xffffffff;
 
-    int i = 0;
-    while (i <= 3)
+    for (int i = 0; i < 4; i++)
     {
-        i++;
+        sizeof(i);
+        *ptr = 0xFFFFFFFF;
+        ptr++;
+       
     }
-
-    {
-
-        // BMP_image->data[0] = 0;
-        // ptr= 0xFFFF00FF;
-        // ptr++;
-    }
-    //BMP_image->data[0] = 0xFFFFFFFF;
 
     if (file != NULL)
     {
 
         fwrite(BMP_image, sizeof(uint8_t), sizeof(BMP_image->BMPheader) + sizeof(BMP_image->BMPdib), file);
-        fwrite(BMP_image->data, sizeof(uint8_t), sizeof(BMP_image->data), file);
+        fwrite(rgb, sizeof(uint8_t), sizeof(rgb), file);
 
         fclose(file);
     }
+    free(rgb);
     return 0;
 }
