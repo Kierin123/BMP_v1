@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "bmp_file_create.h"
@@ -18,53 +19,51 @@ int main(void)
     FILE *file;
     file = fopen("temp.bmp", "wa");
 
-    bmp_file *BMP_image;
+     bmp_file BMP_image = {0};
 
-    BMP_image->BMPheader.head_signature = HEDER_WIN;
-    BMP_image->BMPheader.head_file_size = 0x46;
-    BMP_image->BMPheader.head_reserved1 = NOT_RELEVANT;
-    BMP_image->BMPheader.head_reserved2 = NOT_RELEVANT;
-    BMP_image->BMPheader.head_file_offset_to_pixcels = PIXCEL_OFFSET;
-
-    BMP_image->BMPdib.dib_header_size = INFO_HEADER_SIZE;
-    BMP_image->BMPdib.dib_image_width = 0x0002;
-    BMP_image->BMPdib.dib_image_hight = 0x0002;
-    BMP_image->BMPdib.dib_planes = PLANES;
-    BMP_image->BMPdib.dib_bitperPixcel = BIT_PER_PIXCEL;
-    BMP_image->BMPdib.dib_compression = FILE_COMPRESSION;
-    BMP_image->BMPdib.dib_image_size = 16;
-    BMP_image->BMPdib.dib_x_pixpermeter = X_PIX_METER;
-    BMP_image->BMPdib.dib_y_pixpermeter = Y_PIX_METER;
-    BMP_image->BMPdib.dib_colors = NOT_RELEVANT;
-    BMP_image->BMPdib.dib_important_colors = NOT_RELEVANT;
-
-    int *rgb = malloc(32);
-    int *ptr = &rgb[0];
-    sizeof(*ptr);
-    sizeof(rgb);
-    
-    int header_size = sizeof(BMP_image->BMPheader) + sizeof(BMP_image->BMPdib);
+    BMP_image.header.signature = HEDER_WIN;
+    BMP_image.header.file_size = 0x46;
+    BMP_image.header.reserved1 = NOT_RELEVANT;
+    BMP_image.header.reserved2 = NOT_RELEVANT;
+    BMP_image.header.file_offset_to_pixcels = PIXCEL_OFFSET;
+    BMP_image.dib_info.header_size = INFO_HEADER_SIZE;
+    BMP_image.dib_info.image_width = 0x0002;
+    BMP_image.dib_info.image_hight = 0x0002;
+    BMP_image.dib_info.planes = PLANES;
+    BMP_image.dib_info.bitperPixcel = BIT_PER_PIXCEL;
+    BMP_image.dib_info.compression = FILE_COMPRESSION;
+    BMP_image.dib_info.image_size = 16;
+    BMP_image.dib_info.x_pixpermeter = X_PIX_METER;
+    BMP_image.dib_info.y_pixpermeter = Y_PIX_METER;
+    BMP_image.dib_info.colors = NOT_RELEVANT;
+    BMP_image.dib_info.important_colors = NOT_RELEVANT;
+  
+    int header_size = sizeof(BMP_image.header) + sizeof(BMP_image.dib_info);
     // int data_size = sizeof(BMP_image->data);
     // int data_elements = (data_size / sizeof(uint32_t)) - 1;
 
-    //data = 0xffffffff;
-
     for (int i = 0; i < 4; i++)
     {
-        sizeof(i);
-        *ptr = 0xFFFFFFFF;
-        ptr++;
-       
+      BMP_image.data[i] = 0x672A9C4D * i;
     }
 
+
+/*  
+    Z tym kodem działa bez problemu
+
+    BMP_image->data[0] = 0xFFFFFFFF;
+    BMP_image->data[1] = 0xFFFFFFFF;
+    BMP_image->data[2] = 0xFFFFFFFF;
+    BMP_image->data[3] = 0xFFFFFFFF;
+*/
+
+     
     if (file != NULL)
     {
-
-        fwrite(BMP_image, sizeof(uint8_t), sizeof(BMP_image->BMPheader) + sizeof(BMP_image->BMPdib), file);
-        fwrite(rgb, sizeof(uint8_t), sizeof(rgb), file);
-
-        fclose(file);
+        fwrite(&BMP_image, sizeof(uint8_t), (sizeof(BMP_image.header) + sizeof(BMP_image.dib_info) + sizeof(BMP_image.data)), file);
+        //fwrite(rgb, sizeof(uint8_t), sizeof(rgb), file);
     }
-    free(rgb);
+    
+
     return 0;
 }
