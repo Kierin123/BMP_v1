@@ -62,7 +62,23 @@ typedef struct
 {
     bmp_header header;
     bmp_dib dib_info;
-    uint32_t data[4];
-} bmp_file;
+    
+
+} bmp_file_header;
+
+typedef struct 
+{
+    uint8_t Red;
+    uint8_t Green;
+    uint8_t Blue;
+    
+} bmp_pixcel;
+
+
+
+void create_bmp_file(FILE bFile);
+    
+void draw_pixcels(FILE bFile);
+
 
 #endif

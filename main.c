@@ -19,13 +19,15 @@ int main(void)
     FILE *file;
     file = fopen("temp.bmp", "wa");
 
-     bmp_file BMP_image = {0};
+     bmp_file_header BMP_image = {0};
 
     BMP_image.header.signature = HEDER_WIN;
     BMP_image.header.file_size = 0x46;
     BMP_image.header.reserved1 = NOT_RELEVANT;
     BMP_image.header.reserved2 = NOT_RELEVANT;
     BMP_image.header.file_offset_to_pixcels = PIXCEL_OFFSET;
+
+
     BMP_image.dib_info.header_size = INFO_HEADER_SIZE;
     BMP_image.dib_info.image_width = 0x0002;
     BMP_image.dib_info.image_hight = 0x0002;
@@ -38,30 +40,27 @@ int main(void)
     BMP_image.dib_info.colors = NOT_RELEVANT;
     BMP_image.dib_info.important_colors = NOT_RELEVANT;
   
-    int header_size = sizeof(BMP_image.header) + sizeof(BMP_image.dib_info);
+   // int header_size = sizeof(BMP_image.header) + sizeof(BMP_image.dib_info);
     // int data_size = sizeof(BMP_image->data);
     // int data_elements = (data_size / sizeof(uint32_t)) - 1;
 
-    for (int i = 0; i < 4; i++)
-    {
-      BMP_image.data[i] = 0x672A9C4D * i;
-    }
+//    for (uint32_t i = 0; i <= 3; i++)
+//    {
+//      BMP_image.data[i] = 0x00FFAABB +(i * 1423U);
+//    }
 
+  
+    BMP_image.data[0] = 0x00000000;
+    BMP_image.data[1] = 0x00000000;
+    BMP_image.data[2] = 0x00000000;
+    BMP_image.data[3] = 0xFF008000;
 
-/*  
-    Z tym kodem działa bez problemu
-
-    BMP_image->data[0] = 0xFFFFFFFF;
-    BMP_image->data[1] = 0xFFFFFFFF;
-    BMP_image->data[2] = 0xFFFFFFFF;
-    BMP_image->data[3] = 0xFFFFFFFF;
-*/
 
      
     if (file != NULL)
     {
-        fwrite(&BMP_image, sizeof(uint8_t), (sizeof(BMP_image.header) + sizeof(BMP_image.dib_info) + sizeof(BMP_image.data)), file);
-        //fwrite(rgb, sizeof(uint8_t), sizeof(rgb), file);
+        fwrite(&BMP_image, sizeof(uint8_t), (sizeof(BMP_image.header) + sizeof(BMP_image.dib_info)), file);
+        fwrite(&BMP_image.data, sizeof(uint8_t), (sizeof(BMP_image.data)), file);
     }
     
 
